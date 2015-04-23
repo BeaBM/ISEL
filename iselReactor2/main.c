@@ -85,7 +85,7 @@ static int button_pressed (fsm_t* this)
     //button=0;
     //si contador suficiente cambia de estado
     if(cuenta < PRECIOCAFE){
-	//printf("INTRODUCE MONEDA \n SALDO INSUFICENTE \n");
+	printf("INTRODUCE MONEDA \n SALDO INSUFICENTE \n");
        // flagBoton=0;
         ret = 0;
     }
@@ -108,7 +108,7 @@ static void cup (fsm_t* this)
   digitalWrite (GPIO_LED, LOW);
   digitalWrite (GPIO_CUP, HIGH);
   timer_start (CUP_TIME);
-  // printf("CUP \n");
+   printf("CUP \n");
 }
 
 static void coffee (fsm_t* this)
@@ -116,7 +116,7 @@ static void coffee (fsm_t* this)
   digitalWrite (GPIO_CUP, LOW);
   digitalWrite (GPIO_COFFEE, HIGH);
   timer_start (COFFEE_TIME);
-     //printf("COFFEE \n");
+     printf("COFFEE \n");
 }
 
 static void milk (fsm_t* this)
@@ -124,7 +124,7 @@ static void milk (fsm_t* this)
   digitalWrite (GPIO_COFFEE, LOW);
   digitalWrite (GPIO_MILK, HIGH);
   timer_start (MILK_TIME);
-    // printf("MILK \n");
+     printf("MILK \n");
 }
 
 static void finish (fsm_t* this)
@@ -132,7 +132,7 @@ static void finish (fsm_t* this)
   digitalWrite (GPIO_MILK, LOW);
   digitalWrite (GPIO_LED, HIGH);
     flagBoton=1; //permito que devuelva dinero tras este estado
-    // printf("FINISH \n");
+     printf("FINISH \n");
 }
 
 
@@ -149,7 +149,7 @@ static fsm_trans_t cofm[] = {
 static int calcula_valor (fsm_t* this)
 {
     cuenta+=moneda;
-    //printf("Saldo= %d \n", cuenta);
+    printf("Saldo= %d \n", cuenta);
      if((flagBoton==1)){
          flagBoton=0;
          return 1; //pasa a devolver
@@ -159,8 +159,8 @@ static int calcula_valor (fsm_t* this)
 }
 
 static void devolver (fsm_t* this){
-   // int devuelto= cuenta- PRECIOCAFE;//sacar las monedas
-   // printf("Devuelto %d \n",devuelto);
+    int devuelto= cuenta- PRECIOCAFE;//sacar las monedas
+    printf("Devuelto %d \n",devuelto);
     cuenta=0;
     
 }
@@ -228,14 +228,11 @@ int main (int argc, char *argv[])
   //struct timeval next_activation;
 
   
+
   wiringPiSetup();
-  pinMode (GPIO_BUTTON, INPUT);
-  wiringPiISR (GPIO_BUTTON, INT_EDGE_FALLING, button_isr);
-
-  pinMode (GPIO_MONEDA, INPUT);
-  wiringPiISR (GPIO_MONEDA, INT_EDGE_FALLING, cuenta_isr);
+ 
     //hacer lo mismo con el detector de monedas el gpio que usas
-
+    
   pinMode (GPIO_CUP, OUTPUT);
   pinMode (GPIO_COFFEE, OUTPUT);
   pinMode (GPIO_MILK, OUTPUT);
