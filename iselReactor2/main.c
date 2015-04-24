@@ -59,7 +59,7 @@ static int moneda=0;
 static int flagBoton=0;
 
 static struct timespec start, stop;
-static int t=0;
+//static int t=0;
 //////////////////////
 static void timer_start (int ms)
 {
@@ -159,7 +159,7 @@ static int calcula_valor (fsm_t* this)
 }
 
 static void devolver (fsm_t* this){
-    int devuelto= cuenta- PRECIOCAFE;//sacar las monedas
+    //int devuelto= cuenta- PRECIOCAFE;//sacar las monedas
     //printf("Devuelto %d \n",devuelto);
     cuenta=0;
     
