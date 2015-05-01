@@ -5,7 +5,7 @@
 #include <wiringPi.h>
 #include "fsm.h"
 #include <stdio.h>
-#include "tasks.h"
+#include <tasks.h>
 
 
 #define GPIO_BUTTON	2
@@ -31,11 +31,6 @@
 
 fsm_t* cofm_fsm;
 fsm_t* monedero_fsm;
-
-static  pthread_mutex_t m_cuenta;
-static  pthread_mutex_t m_boton;
-
-
 enum cofm_state {
   COFM_WAITING,
   COFM_CUP,
@@ -64,7 +59,7 @@ static int moneda=0;
 static int flagBoton=0;
 
 static struct timespec start, stop;
-static int t=0;
+//static int t=0;
 //////////////////////
 static void timer_start (int ms)
 {
@@ -87,25 +82,17 @@ static void timer_start (int ms)
 static int button_pressed (fsm_t* this)
 {
   int ret = button;
-  clock_gettime(CLOCK_REALTIME, &start);
-   pthread_mutex_lock(&m_cuenta);
-      //button=0;
+    //button=0;
     //si contador suficiente cambia de estado
     if(cuenta < PRECIOCAFE){
-        //printf("INTRODUCE MONEDA \n SALDO INSUFICENTE \n");
+	//printf("INTRODUCE MONEDA \n SALDO INSUFICENTE \n");
        // flagBoton=0;
         ret = 0;
     }
-
-     else if(ret==0){       
+    else if(ret==0){       
        //printf("SALDO SUFICIENTE: APRETA BOTON\n");
 	return ret;
     }
-
-pthread_mutex_unlock(&m_cuenta);
-   clock_gettime(CLOCK_REALTIME, &stop);
-    t=( stop.tv_nsec - start.tv_nsec );
-    printf("%d cuenta \n", t);
   return ret;
 }
 
@@ -121,7 +108,7 @@ static void cup (fsm_t* this)
   digitalWrite (GPIO_LED, LOW);
   digitalWrite (GPIO_CUP, HIGH);
   timer_start (CUP_TIME);
-   printf("CUP \n");
+   //printf("CUP \n");
 }
 
 static void coffee (fsm_t* this)
@@ -129,7 +116,7 @@ static void coffee (fsm_t* this)
   digitalWrite (GPIO_CUP, LOW);
   digitalWrite (GPIO_COFFEE, HIGH);
   timer_start (COFFEE_TIME);
-     printf("COFFEE \n");
+     //printf("COFFEE \n");
 }
 
 static void milk (fsm_t* this)
@@ -137,21 +124,15 @@ static void milk (fsm_t* this)
   digitalWrite (GPIO_COFFEE, LOW);
   digitalWrite (GPIO_MILK, HIGH);
   timer_start (MILK_TIME);
-     printf("MILK \n");
+     //printf("MILK \n");
 }
 
 static void finish (fsm_t* this)
 {
   digitalWrite (GPIO_MILK, LOW);
   digitalWrite (GPIO_LED, HIGH);
-  clock_gettime(CLOCK_REALTIME, &start);
-   pthread_mutex_lock(&m_cuenta);
-      flagBoton=1; //permito que devuelva dinero tras este estado
-   pthread_mutex_unlock(&m_cuenta);
-   clock_gettime(CLOCK_REALTIME, &stop);
-    t=( stop.tv_nsec - start.tv_nsec );
-    printf("%d button\n", t);
-     printf("FINISH \n");
+    flagBoton=1; //permito que devuelva dinero tras este estado
+     //printf("FINISH \n");
 }
 
 
@@ -167,38 +148,19 @@ static fsm_trans_t cofm[] = {
 //////////////////////////////////
 static int calcula_valor (fsm_t* this)
 {
- clock_gettime(CLOCK_REALTIME, &start);
-    pthread_mutex_lock(&m_cuenta);
-    	cuenta+=moneda;
-    pthread_mutex_unlock(&m_cuenta);
-    clock_gettime(CLOCK_REALTIME, &stop);
-    t=( stop.tv_nsec - start.tv_nsec );
-    printf("%d cuenta\n", t);
+    cuenta+=moneda;
     //printf("Saldo= %d \n", cuenta);
-    clock_gettime(CLOCK_REALTIME, &start);
-    pthread_mutex_lock(&m_boton);
-
      if((flagBoton==1)){
          flagBoton=0;
          return 1; //pasa a devolver
     }
-    pthread_mutex_unlock(&m_boton);
-    clock_gettime(CLOCK_REALTIME, &stop);
-        t=( stop.tv_nsec - start.tv_nsec );
-    printf("%d button\n", t);
     return 0;//vuelve a calcular
     
 }
 
 static void devolver (fsm_t* this){
-    clock_gettime(CLOCK_REALTIME, &start);
-    	pthread_mutex_lock(&m_cuenta);
-    		int devuelto= cuenta- PRECIOCAFE;//sacar las monedas
-    	pthread_mutex_unlock(&m_cuenta);
-    clock_gettime(CLOCK_REALTIME, &stop);
-    t=( stop.tv_nsec - start.tv_nsec );
-    printf("%d cuenta \n", t);
-    printf("Devuelto %d \n",devuelto);
+    //int devuelto= cuenta- PRECIOCAFE;//sacar las monedas
+    //printf("Devuelto %d \n",devuelto);
     cuenta=0;
     
 }
@@ -210,6 +172,10 @@ static fsm_trans_t monedero[] = {
   {-1, NULL, -1, NULL },
 };
 
+
+
+
+
 // wait until next_activation (absolute time)
 void delay_until (struct timeval* next_activation)
 {
@@ -220,7 +186,7 @@ void delay_until (struct timeval* next_activation)
 }
 
 static void
-fsm_moned (void)
+fsm_moned (struct event_handler_t* eh)
 { 
 clock_gettime(CLOCK_REALTIME, &start);
   static const struct timeval period = {0, SECONDARY_PERIOD_2/1000 };
@@ -228,30 +194,26 @@ clock_gettime(CLOCK_REALTIME, &start);
 clock_gettime(CLOCK_REALTIME, &stop);
 //t=( stop.tv_nsec - start.tv_nsec );
 //printf("%d \n", t);
- 
+  timeval_add(&eh->next_activation, &eh->next_activation, &period);
 
 }
 
 static void
-fsm_cofm (void)
+fsm_cofm (struct event_handler_t* eh)
 {
   clock_gettime(CLOCK_REALTIME, &start);
  static const struct timeval period = { 0,  SECONDARY_PERIOD_1/1000};
  fsm_fire (cofm_fsm); 
- clock_gettime(CLOCK_REALTIME, &stop);
+cock_gettime(CLOCK_REALTIME, &stop);
 //t=( stop.tv_nsec - start.tv_nsec );
 //printf("%d \n", t); 
- 
+ timeval_add (&eh->next_activation, &eh->next_activation, &period);
 
 }
 
 int main (int argc, char *argv[])
 {  
- pthread_t t_cofm;
- pthread_t t_moned;
- 
- void* ret;
- //  int numPeriodo=1;
+//  int numPeriodo=1;
  // double tiempos=0;
   double total[10];
   int i=0;
@@ -268,9 +230,6 @@ int main (int argc, char *argv[])
   
 
   wiringPiSetup();
-
-init_mutex (&m_boton, 2);
-init_mutex (&m_cuenta, 2);
  
     //hacer lo mismo con el detector de monedas el gpio que usas
     
@@ -282,12 +241,20 @@ init_mutex (&m_cuenta, 2);
   cofm_fsm = fsm_new (cofm);
   monedero_fsm = fsm_new (monedero);
 
+  EventHandler tmoned, tcofm;
+
+  reactor_init ();
+
+  event_handler_init (&tcofm, 2, (eh_func_t)   fsm_cofm);
+  reactor_add_handler (&tcofm);
+
+  event_handler_init (&tmoned, 1, (eh_func_t)   fsm_moned);
+  reactor_add_handler (&tmoned);
   
   while (scanf("%d %d %d", &button, &moneda, &timer)==3) {
 	
 	clock_gettime(CLOCK_REALTIME, &start);
-	create_task (&t_cofm, fsm_cofm, NULL, 400, 2, 1024);
-  	create_task (&t_moned, fsm_moned, NULL, 800, 1, 1024);
+	reactor_handle_events ();
 	clock_gettime(CLOCK_REALTIME, &stop);
 	total[col]=( stop.tv_nsec - start.tv_nsec );
 	col++;
@@ -298,7 +265,6 @@ init_mutex (&m_cuenta, 2);
 		printf("%f ",total[i]);
 		printf("\n");
       }
-//  pthread_join(t_cofm, &ret);
-//  pthread_join(t_moned, &ret);
+
   return 0;
 }
