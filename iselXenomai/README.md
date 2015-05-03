@@ -1,0 +1,3 @@
+En este apartado hemos usado una planificación basada en pthreads, para ello asignamos a cada máquina de estados una hebra de tal manera que la máquina de café sea más prioritaria que la del monedero. Cada hebra tendrá que acceder a unos recursos, algunos comunes a las dos. Por ello realizamos mutex, es decir, se bloquean los recursos comunes cuando una hebra las usa, para evitar intercambios de datos confusos.
+En este caso seguimos con los periodos asignados hasta ahora, 0,4 para la máquina de café y 0,8 para el monedero.
+tras la ejecución es posible observar que los tiempos se cumplen y además que los bloqueos por acceso a recursos compartidos son despreciables frente al tiempo de ejecución.
