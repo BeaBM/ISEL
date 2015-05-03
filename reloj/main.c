@@ -47,7 +47,7 @@ static int sensorSalida ()
 }
 static void wait ()
 {
-	struct timespec tWait = {0, 500000000};
+	struct timespec tWait = {0, 140000000};
 	nanosleep(&tWait, NULL);
 
 }
