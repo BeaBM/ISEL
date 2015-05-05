@@ -43,70 +43,71 @@ void actualizaTiempo(){
 	
 }
 
-static void numeros(int num){
-    switch(num){
-        case 0:
-            printf("11111111");
-            printf("10000001");
-            printf("11111111");
-            printf("00000000");
+static void numeros(char c){
+    switch(c){
+        case '0':
+            printf("11111111\n");
+            printf("10000001\n");
+            printf("11111111\n");
+            printf("00000000\n");
             break;
-        case 1:
-            printf("00000100");
-            printf("00000010");
-            printf("11111111");
-            printf("00000000");
+        case '1':
+            printf("00000100\n");
+            printf("00000010\n");
+            printf("11111111\n");
+            printf("00000000\n");
             break;
-        case 2:
-            printf("11111001");
-            printf("10001001");
-            printf("10001111");
-            printf("00000000");
+        case '2':
+            printf("11111001\n");
+            printf("10001001\n");
+            printf("10001111\n");
+            printf("00000000\n");
             break;
-        case 3:
-            printf("10001001");
-            printf("10001001");
-            printf("11111111");
-            printf("00000000");
+        case '3':
+            printf("10001001\n");
+            printf("10001001\n");
+            printf("11111111\n");
+            printf("00000000\n");
             break;
-        case 4:
-            printf("00001111");
-            printf("00001001");
-            printf("11111111");
-            printf("00000000");
+        case '4':
+            printf("00001111\n");
+            printf("00001001\n");
+            printf("11111111\n");
+            printf("00000000\n");
             break;
-        case 5:
-            printf("10001111");
-            printf("10001001");
-            printf("11111001");
-            printf("00000000");
+        case '5':
+            printf("10001111\n");
+            printf("10001001\n");
+            printf("11111001\n");
+            printf("00000000\n");
             break;
             
-        case 6:
-            printf("11111111");
-            printf("10001000");
-            printf("11111000");
-            printf("00000000");
+        case '6':
+            printf("11111111\n");
+            printf("10001000\n");
+            printf("11111000\n");
+            printf("00000000\n");
             break;
-        case 7:
-            printf("00000001");
-            printf("00000001");
-            printf("11111111");
-            printf("00000000");
+        case '7':
+            printf("00000001\n");
+            printf("00000001\n");
+            printf("11111111\n");
+            printf("00000000\n");
             break;
-        case 8:
-            printf("11111111");
-            printf("10001001");
-            printf("11111111");
-            printf("00000000");
+        case '8':
+            printf("11111111\n");
+            printf("10001001\n");
+            printf("11111111\n");
+            printf("00000000\n");
             break;
-        case 9:
-            printf("00001111");
-            printf("00001001");
-            printf("11111111");
-            printf("00000000");
+        case '9':
+            printf("00001111\n");
+            printf("00001001\n");
+            printf("11111111\n");
+            printf("00000000\n");
             break;
         default:
+<<<<<<< HEAD
             clock_gettime(CLOCK_REALTIME, &start);
             printf("10000001");
             clock_gettime(CLOCK_REALTIME, &stop);
@@ -115,6 +116,10 @@ static void numeros(int num){
             cnt++;
            
             
+=======
+            printf("10000001\n");
+ 	    printf("00000000\n");
+>>>>>>> 568040d6abb532acf5b88c5282b740300ae87685
     }
 
 }
