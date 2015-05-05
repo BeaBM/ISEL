@@ -12,9 +12,15 @@ enum relojLed {
  TERMINA,
 };
 
+static struct timespec start,stop;
+static int t=0;
+
+
 int sensor;
 int flagLlegada;
 int tiempos[8];
+int tmp[24];
+int cnt =0;
 
 void actualizaTiempo(){
 
@@ -101,7 +107,14 @@ static void numeros(int num){
             printf("00000000");
             break;
         default:
+            clock_gettime(CLOCK_REALTIME, &start);
             printf("10000001");
+            clock_gettime(CLOCK_REALTIME, &stop);
+            printf("00000000");
+            tmp[cnt]=( stop.tv_nsec - start.tv_nsec );
+            cnt++;
+           
+            
     }
 
 }
@@ -169,5 +182,9 @@ int main (){
 	while(scanf("%d", &sensor)==1){
 		fsm_fire(fsm_relojLed);	
 	}
+    for(i=0;i<24; i++){
+        printf("%d ",tmpi]);
+        printf("\n");
+    }
 return 0;
 }
