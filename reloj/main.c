@@ -13,7 +13,6 @@ enum relojLed {
 };
 
 static struct timespec start,stop;
-static int t=0;
 
 
 int sensor;
@@ -21,7 +20,7 @@ int flagLlegada;
 int tiempos[8];
 int tmp[24];
 int cnt =0;
-
+int i;
 void actualizaTiempo(){
 
 	time_t initTiempos = time(NULL); //epoch 00:00 del 1 de enero de 1970 cuenta los segundos desde entonces.
@@ -107,20 +106,13 @@ static void numeros(char c){
             printf("00000000\n");
             break;
         default:
-<<<<<<< HEAD
             clock_gettime(CLOCK_REALTIME, &start);
-            printf("10000001");
+            printf("10000001\n");
             clock_gettime(CLOCK_REALTIME, &stop);
-            printf("00000000");
+            printf("00000000\n");
             tmp[cnt]=( stop.tv_nsec - start.tv_nsec );
             cnt++;
-           
-            
-=======
-            printf("10000001\n");
- 	    printf("00000000\n");
->>>>>>> 568040d6abb532acf5b88c5282b740300ae87685
-    }
+         }
 
 }
 
@@ -187,9 +179,9 @@ int main (){
 	while(scanf("%d", &sensor)==1){
 		fsm_fire(fsm_relojLed);	
 	}
-    for(i=0;i<24; i++){
-        printf("%d ",tmpi]);
-        printf("\n");
-    }
-return 0;
+    	for(i=0;i<24; i++){
+       	 printf("%d ",tmp[i]);
+       	 printf("\n");
+   	 }
+	return 0;
 }
