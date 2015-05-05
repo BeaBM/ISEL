@@ -98,6 +98,7 @@ static int button_pressed (fsm_t* this)
     }
 
      else if(ret==0){       
+	pthread_mutex_unlock(&m_cuenta);
        //printf("SALDO SUFICIENTE: APRETA BOTON\n");
 	return ret;
     }
@@ -180,7 +181,11 @@ static int calcula_valor (fsm_t* this)
 
      if((flagBoton==1)){
          flagBoton=0;
-         return 1; //pasa a devolver
+	pthread_mutex_unlock(&m_boton);
+   	 clock_gettime(CLOCK_REALTIME, &stop);
+        t=( stop.tv_nsec - start.tv_nsec );
+   	 printf("%d button\n", t);        
+	 return 1; //pasa a devolver
     }
     pthread_mutex_unlock(&m_boton);
     clock_gettime(CLOCK_REALTIME, &stop);
@@ -199,7 +204,13 @@ static void devolver (fsm_t* this){
     t=( stop.tv_nsec - start.tv_nsec );
     printf("%d cuenta \n", t);
     printf("Devuelto %d \n",devuelto);
-    cuenta=0;
+   clock_gettime(CLOCK_REALTIME, &start);
+        pthread_mutex_lock(&m_cuenta);
+	 cuenta=0;
+	pthread_mutex_unlock(&m_cuenta);
+    clock_gettime(CLOCK_REALTIME, &stop);
+    t=( stop.tv_nsec - start.tv_nsec );
+    printf("%d cuenta \n", t);
     
 }
 
