@@ -6,7 +6,7 @@ Asignamos un evento a cada a cada máquina de estado, es decir cada evento inclu
 la máquina que le corresponde. También asignamos prioridades a cada tipo de vento. Los eventos relacionados con la máquina de café serán más
 prioritarios que los del monedero.
 
-Para este tipo de planificació puede existir bloqueos epara los eventos. Es decir, un evento menos
+Para este tipo de planificación puede existir bloqueos epara los eventos. Es decir, un evento menos
 prioritario puede bloquear a otro evento más prioritario justo en el 
 inicio de  la ejecución del evento.
 En este caso el monedero puede bloquear a la máquina de café y, el bloqueo durará como mucho 0,4 segundos,

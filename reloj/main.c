@@ -37,6 +37,75 @@ void actualizaTiempo(){
 	
 }
 
+static void numeros(int num){
+    switch(num){
+        case 0:
+            printf(11111111);
+            printf(10000001);
+            printf(11111111);
+            printf(00000000);
+            break;
+        case 1:
+            printf(00000100);
+            printf(00000010);
+            printf(11111111);
+            printf(00000000);
+            break;
+        case 2:
+            printf(11111001);
+            printf(10001001);
+            printf(10001111);
+            printf(00000000);
+            break;
+        case 3:
+            printf(10001001);
+            printf(10001001);
+            printf(11111111);
+            printf(00000000);
+            break;
+        case 4:
+            printf(00001111);
+            printf(00001001);
+            printf(11111111);
+            printf(00000000);
+            break;
+        case 5:
+            printf(10001111);
+            printf(10001001);
+            printf(11111001);
+            printf(00000000);
+            break;
+            
+        case 6:
+            printf(11111111);
+            printf(10001000);
+            printf(11111000);
+            printf(00000000);
+            break;
+        case 7:
+            printf(00000001);
+            printf(00000001);
+            printf(11111111);
+            printf(00000000);
+            break;
+        case 8:
+            printf(11111111);
+            printf(10001001);
+            printf(11111111);
+            printf(00000000);
+            break;
+        case 9:
+            printf(00001111);
+            printf(00001001);
+            printf(11111111);
+            printf(00000000);
+            break;
+        default:
+            printf(10000001);
+    }
+
+}
+
 static int sensorSalida ()
 {
 	if (sensor == 1){
@@ -63,8 +132,9 @@ static void pintar ()
 	for(i=0; i<8; i++){
 		wait();
 		t = tiempos[i];
-		printf("%c", t);
-		fflush(stdout);
+        numeros(t);
+		//printf("%c", t);
+		//fflush(stdout);
 	}
 
 	flagLlegada = 1;
