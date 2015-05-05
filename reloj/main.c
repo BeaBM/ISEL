@@ -23,6 +23,7 @@ int tmp[24];
 int tmp2[24];
 int cnt =0;
 int cnt2 =0;
+int i;
 
 void actualizaTiempo(){
 
@@ -110,14 +111,13 @@ static void numeros(char c){
             break;
         default:
             clock_gettime(CLOCK_REALTIME, &start);
-            printf("10000001");
+            printf("10000001\n");
             clock_gettime(CLOCK_REALTIME, &stop);
-            printf("00000000");
+            printf("00000000\n");
             tmp[cnt]=( stop.tv_nsec - start.tv_nsec );
             cnt++;
-
     }
-
+         }
 }
 
 static int sensorSalida ()
@@ -186,11 +186,16 @@ int main (){
 
 	while(scanf("%d", &sensor)==1){
 		fsm_fire(fsm_relojLed);	
-	}
-    for(i=0;i<24; i++){
+	}    for(i=0;i<24; i++){
         printf("%d ",tmp[i]);
         printf("%d ",tmp2[i]);
         printf("\n");
     }
 return 0;
+
+    	for(i=0;i<24; i++){
+       	 printf("%d ",tmp[i]);
+       	 printf("\n");
+   	 }
+	return 0;
 }
