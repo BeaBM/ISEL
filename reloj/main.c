@@ -117,7 +117,7 @@ static void numeros(char c){
             tmp[cnt]=( stop.tv_nsec - start.tv_nsec );
             cnt++;
     }
-         }
+ 
 }
 
 static int sensorSalida ()
@@ -137,7 +137,6 @@ static void wait ()
 
 static void pintar ()
 {
-    clock_gettime(CLOCK_REALTIME, &start);
 	int i;
 	char t;
 	
@@ -153,10 +152,6 @@ static void pintar ()
 	}
 
 	flagLlegada = 1;
-    clock_gettime(CLOCK_REALTIME, &stop);
-    tmp2[cnt2]=( stop.tv_nsec - start.tv_nsec );
-    cnt2++;
-
 }
 
 static int sensorLlegada ()
@@ -185,17 +180,15 @@ int main (){
 	fsm_t* fsm_relojLed = fsm_new(relojLed);
 
 	while(scanf("%d", &sensor)==1){
+	clock_gettime(CLOCK_REALTIME, &start);
 		fsm_fire(fsm_relojLed);	
+	clock_gettime(CLOCK_REALTIME, &stop);
+    	tmp2[cnt2]=( stop.tv_nsec - start.tv_nsec );
+    	cnt2++;
 	}    for(i=0;i<24; i++){
         printf("%d ",tmp[i]);
         printf("%d ",tmp2[i]);
         printf("\n");
     }
 return 0;
-
-    	for(i=0;i<24; i++){
-       	 printf("%d ",tmp[i]);
-       	 printf("\n");
-   	 }
-	return 0;
 }
