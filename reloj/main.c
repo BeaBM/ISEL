@@ -13,14 +13,16 @@ enum relojLed {
 };
 
 static struct timespec start,stop;
-static int t=0;
+
 
 
 int sensor;
 int flagLlegada;
 int tiempos[8];
 int tmp[24];
+int tmp2[24];
 int cnt =0;
+int cnt2 =0;
 
 void actualizaTiempo(){
 
@@ -107,19 +109,13 @@ static void numeros(char c){
             printf("00000000\n");
             break;
         default:
-<<<<<<< HEAD
             clock_gettime(CLOCK_REALTIME, &start);
             printf("10000001");
             clock_gettime(CLOCK_REALTIME, &stop);
             printf("00000000");
             tmp[cnt]=( stop.tv_nsec - start.tv_nsec );
             cnt++;
-           
-            
-=======
-            printf("10000001\n");
- 	    printf("00000000\n");
->>>>>>> 568040d6abb532acf5b88c5282b740300ae87685
+
     }
 
 }
@@ -141,6 +137,7 @@ static void wait ()
 
 static void pintar ()
 {
+    clock_gettime(CLOCK_REALTIME, &start);
 	int i;
 	char t;
 	
@@ -156,6 +153,9 @@ static void pintar ()
 	}
 
 	flagLlegada = 1;
+    clock_gettime(CLOCK_REALTIME, &stop);
+    tmp2[cnt2]=( stop.tv_nsec - start.tv_nsec );
+    cnt2++;
 
 }
 
@@ -188,7 +188,8 @@ int main (){
 		fsm_fire(fsm_relojLed);	
 	}
     for(i=0;i<24; i++){
-        printf("%d ",tmpi]);
+        printf("%d ",tmp[i]);
+        printf("%d ",tmp2[i]);
         printf("\n");
     }
 return 0;
